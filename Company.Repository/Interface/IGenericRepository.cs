@@ -10,7 +10,7 @@ namespace Company.Repository.Interface
     public interface IGenericRepository<T> where T : BaseEntity
     {
         T GetById(int id);
-        List<T> GetAll();
+        IEnumerable<T> GetAll();
         void Add(T entity);
         void Delete(T entity);
         void Update(T entity);

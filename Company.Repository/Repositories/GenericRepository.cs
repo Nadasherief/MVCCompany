@@ -29,7 +29,7 @@ namespace Company.Repository.Repositories
             _context.SaveChanges();
         }
 
-        public List<T> GetAll()
+        public IEnumerable<T> GetAll()
         =>_context.Set<T>().ToList();
 
         public T GetById(int id)
