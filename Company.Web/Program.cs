@@ -2,6 +2,8 @@ using Company.Data.Contexts;
 using Company.Data.Models;
 using Company.Repository.Interface;
 using Company.Repository.Repositories;
+using Company.Service.Interface;
+using Company.Service.Sevices;
 using Microsoft.EntityFrameworkCore;
 
 namespace Company.Web
@@ -21,9 +23,11 @@ namespace Company.Web
 
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-
-            //builder.Services.AddScoped<IGenericRepository<Department>, GenericRepository<Department>>();
-            //builder.Services.AddScoped<IGenericRepository<Employee>, GenericRepository<Employee>>();
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IGenericRepository<Department>, GenericRepository<Department>>();
+            builder.Services.AddScoped<IGenericRepository<Employee>, GenericRepository<Employee>>();
+            //builder.Services.AddSingleton<IGenericRepository<Department>, GenericRepository<Department>>();
+            //builder.Services.AddTransient<IGenericRepository<Employee>, GenericRepository<Employee>>();
 
 
             var app = builder.Build();

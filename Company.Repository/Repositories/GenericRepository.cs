@@ -32,7 +32,7 @@ namespace Company.Repository.Repositories
         public IEnumerable<T> GetAll()
         =>_context.Set<T>().ToList();
 
-        public T GetById(int id)
+        public T GetById(int? id)
         =>_context.Set<T>().Find(id);
 
         public void Update(T entity)
