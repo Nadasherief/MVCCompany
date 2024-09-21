@@ -1,6 +1,7 @@
 ﻿using Company.Data.Contexts;
 using Company.Data.Models;
 using Company.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,28 +10,16 @@ using System.Threading.Tasks;
 
 namespace Company.Repository.Repositories
 {
-    public class EmployeeRepository : IEmployeeRepository
+    public class EmployeeRepository : GenericRepository<Employee> , IEmployeeRepository
     {
-        private readonly CompanyDBContext _companyDBContext;
+        private readonly CompanyDBContext _context;
 
-        public EmployeeRepository(CompanyDBContext companyDBContext)
+        public EmployeeRepository(CompanyDBContext companyDBContext) : base(companyDBContext) 
         {
-            _companyDBContext = companyDBContext;
+            _context = companyDBContext;
         }
-        public void Add(Employee employee)
-        =>_companyDBContext.Employees.Add(employee);      
 
-        public void Delete(Employee employee)
-        =>_companyDBContext.Remove(employee);
-        public List<Employee> GetAll()
-        => _companyDBContext.Employees.ToList();
-
-        public Employee GetById(int id)
-        => _companyDBContext.Employees.FirstOrDefault(x => x.Id == id );    
-        
-
-        public void Update(Employee employee)
-         => _companyDBContext.Employees.Update(employee);
-
+        public Employee GetByName(string name)
+        =>_context.Set<Employee>().Find(name);
     }
 }

@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace Company.Repository.Interface
 {
-    public interface IEmployeeRepository
+    public interface IEmployeeRepository : IGenericRepository<Employee>
     {
-        Employee GetById(int id);
-        List<Employee> GetAll();
-        void Add (Employee employee); 
-        void Delete (Employee employee);
-        void Update (Employee employee);
+        Employee GetByName (string name);
+        
     }
 }
