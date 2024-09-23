@@ -3,6 +3,7 @@ using Company.Repository.Interface;
 using Company.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 
 namespace Company.Web.Controllers
 {
@@ -45,6 +46,29 @@ namespace Company.Web.Controllers
 
         }
         [HttpGet]
+        public IActionResult Update(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var department = _departmentService.GetById(id);
+            return View(department);
+        }
+
+        [HttpPost]
+        public IActionResult Update(int id, Department department)
+        {
+            if (id != department.Id)
+            {
+                return NotFound();
+            }
+            
+            _departmentService.Update(department);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
         public IActionResult Details(int? id)
         {
             var dept= _departmentService.GetById(id);   
@@ -53,6 +77,28 @@ namespace Company.Web.Controllers
                 return NotFound();
             }
             return View(dept);
+        }
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var department = _departmentService.GetById(id);
+            return View(department);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var department = _departmentService.GetById(id);
+            if (department == null)
+            {
+                return NotFound();
+            }
+            _departmentService.Delete(department);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -52,7 +52,18 @@ namespace Company.Service.Sevices
 
         public void Update(Department department)
         {
-            _departmentRepository.Update(department);
+            var dept = _departmentRepository.GetById(department.Id);
+            if (dept.Name != department.Name)
+            {
+                if (GetAll().Any(x=>x.Name == department.Name)) {
+                    throw new Exception("Duplicate DepartmentsName");
+                }
+                
+            }
+            dept.Name = department.Name;   
+            dept.Code= department.Code;
+
+            _departmentRepository.Update(dept);
         }
     }
 }
