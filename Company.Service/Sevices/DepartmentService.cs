@@ -11,26 +11,35 @@ namespace Company.Service.Sevices
 {
     public class DepartmentService : IDepartmentService
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IUnitofWork _unitofWork;
 
-        public DepartmentService(IDepartmentRepository departmentRepository)
+        public DepartmentService(IUnitofWork unitofWork)
         {
-            _departmentRepository = departmentRepository;
+            _unitofWork = unitofWork;
         }
 
         public void Add(Department department)
         {
-            _departmentRepository.Add(department);  
+            var mappedDepartment = new Department
+            {
+                Code = department.Code,
+                Name = department.Name,
+                CreatedAt = DateTime.Now
+            };
+            _unitofWork.departmentRepository.Add(mappedDepartment);
+            _unitofWork.Complete();
         }
 
         public void Delete(Department department)
         {
-            _departmentRepository.Delete(department);
+            _unitofWork.departmentRepository.Delete(department);
+            _unitofWork.Complete();
+
         }
 
         public IEnumerable<Department> GetAll()
         {
-            return _departmentRepository.GetAll().Where(x=>x.IsDeleted !=true); 
+            return _unitofWork.departmentRepository.GetAll().Where(x=>x.IsDeleted !=true); 
         }
 
         public Department GetById(int? id)
@@ -39,7 +48,7 @@ namespace Company.Service.Sevices
             {
                 return null; 
             }
-            var dept= _departmentRepository.GetById(id);
+            var dept= _unitofWork.departmentRepository.GetById(id);
             if (dept is null) {
 
                 return null;
@@ -52,7 +61,7 @@ namespace Company.Service.Sevices
 
         public void Update(Department department)
         {
-            var dept = _departmentRepository.GetById(department.Id);
+            var dept = _unitofWork.departmentRepository.GetById(department.Id);
             if (dept.Name != department.Name)
             {
                 if (GetAll().Any(x=>x.Name == department.Name)) {
@@ -63,7 +72,9 @@ namespace Company.Service.Sevices
             dept.Name = department.Name;   
             dept.Code= department.Code;
 
-            _departmentRepository.Update(dept);
+            _unitofWork.departmentRepository.Update(dept);
+            _unitofWork.Complete();
+
         }
     }
 }
