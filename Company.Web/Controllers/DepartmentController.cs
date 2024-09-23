@@ -36,7 +36,7 @@ namespace Company.Web.Controllers
                     _departmentService.Add(department);
                     return RedirectToAction("Index");
                 }
-                ModelState.AddModelError("DepartmentError", "VlidationError");
+                ModelState.AddModelError("DepartmentError", "ValidationError");
             }
             catch (Exception ex) {
                 ModelState.AddModelError("DepartmentError", ex.Message);
